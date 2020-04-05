@@ -439,10 +439,10 @@
         space = clamp(space,9,200);
 
         // grey lines as background of timeline
-        for (var i=0; i<data.length; i++) {
+        /*for (var i=0; i<data.length; i++) {
           var y = 100+i*50-yScroll;
           rectfill(0,y-25,canvas.width,50,i%2 === 0  ? "#ddd" : "#bbb");
-        }
+        }*/
 
         // vertical lines each 10 years
         for (var i=start; i<=end+1; i++) {
@@ -465,6 +465,7 @@
           var t = p.name + " (" + p.start + (p.end !== -1 ? " - " + p.end : "") + ", "+ ((p.end === -1 ? 2020 : p.end) - p.start) +" years old)";
           var textX = x1 < 0 ? (x2 - textwidth(t) - 10 < 0 ? x2 - textwidth(t) - 10 : 5) : x1 + 5;
           text(t,textX+5,y+5,tinycolor(p.color).isLight() ? "black" : "white");
+          line(0,y-25,canvas.width,y-25);
         }
 
         // timestamps
@@ -482,6 +483,8 @@
             text(i,-40,x,0,17.5);
           }
           ctx.restore();
+
+          line(0,75,canvas.width,75)
         }
 
 
