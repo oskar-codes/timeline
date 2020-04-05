@@ -462,7 +462,7 @@
             x2 = (end + 50 - start) * space + 17 - xScroll + space;
           }
           line(x1,y,x2,y,p.color,35);
-          var t = p.name + " (" + p.start + (p.end !== -1 ? " - " + p.end : "") + ")"
+          var t = p.name + " (" + p.start + (p.end !== -1 ? " - " + p.end : "") + ", "+ ((p.end === -1 ? 2020 : p.end) - p.start) +" years old)";
           var textX = x1 < 0 ? (x2 - textwidth(t) - 10 < 0 ? x2 - textwidth(t) - 10 : 5) : x1 + 5;
           text(t,textX+5,y+5,tinycolor(p.color).isLight() ? "black" : "white");
         }
