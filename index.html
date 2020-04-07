@@ -420,6 +420,7 @@
         window.yScroll = 0;
         window.xScroll = 999999;
         window.space = 20;
+        window.canclick = true;
       }
 
       function update(deltaTime) {
@@ -453,6 +454,7 @@
         }
 
         // populate timeline with characters
+        var isHovering = false;
         for (var i=0; i<data.length; i++) {
           var p = data[i];
           var y = 100+i*50-yScroll;
@@ -466,6 +468,27 @@
           var textX = x1 < 0 ? (x2 - textwidth(t) - 10 < 0 ? x2 - textwidth(t) - 10 : 5) : x1 + 5;
           text(t,textX+5,y+5,tinycolor(p.color).isLight() ? "black" : "white");
           line(0,y-25,canvas.width,y-25);
+
+          var mx = mouse()[0];
+          var my = mouse()[1];
+          if (mx > textX && mx < textX+textwidth(t) && my > y - 20 && my < y + 20) {
+            line(textX+5,y+12,textX+textwidth(t)+6,y+12,tinycolor(p.color).isLight() ? "black" : "white");
+            isHovering = true;
+            cursor("pointer");
+            if (mousedown() && canclick) {
+              var script = document.createElement("script");
+              
+              script.src = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(p.name)}&format=json&callback=wikiData`
+              
+              document.body.appendChild(script);
+            }
+
+            
+          }
+        }
+        canclick = !mousedown();
+        if (!isHovering) {
+          cursor();
         }
 
         // timestamps
@@ -537,6 +560,15 @@
         // sorting
         text("①",120,anchor + 40,"black",24);
         text("Alphabetical",120,anchor + 75,"black",24,"serif");*/
+      }
+
+      function wikiData(data) {
+        var scripts = document.querySelectorAll("script[src^='https://en.wiki'");
+        for (var i=0; i<scripts.length; i++) {
+          document.body.removeChild(scripts[i]);
+        }
+
+        window.open(data[3][0]);
       }
 
       // x scrolling
