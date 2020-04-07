@@ -420,7 +420,7 @@
         window.yScroll = 0;
         window.xScroll = 999999;
         window.space = 20;
-        window.canclick = true;
+        window.prevFrameDown = false;
       }
 
       function update(deltaTime) {
@@ -475,7 +475,7 @@
             line(textX+5,y+12,textX+textwidth(t)+6,y+12,tinycolor(p.color).isLight() ? "black" : "white");
             isHovering = true;
             cursor("pointer");
-            if (mousedown() && canclick) {
+            if (!mousedown() && prevFrameDown) {
               var script = document.createElement("script");
               
               script.src = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(p.name)}&format=json&callback=wikiData`
@@ -486,7 +486,7 @@
             
           }
         }
-        canclick = !mousedown();
+        prevFrameDown = mousedown();
         if (!isHovering) {
           cursor();
         }
